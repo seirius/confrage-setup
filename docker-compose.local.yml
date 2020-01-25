@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+
+    mysql:
+        image: mysql
+        environment: 
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        command: 
+            - '--default-authentication-plugin=mysql_native_password'
+            - '--character-set-server=utf8'
+            - '--collation-server=utf8_general_ci'
+
+    confrage:
+        build:
+            context: ./confrage
+            target: local
+        environment: 
+            LOGGER_LEVEL: ${CONFRAGE_LOGGER_LEVEL}
+            CONFRAGE_PORT: ${CONFRAGE_PORT}
+            TYPEORM_CONNECTION: ${CONFRAGE_TYPEORM_CONNECTIOn}
+            TYPEORM_HOST: ${CONFRAGE_TYPEORM_HOST}
+            TYPEORM_USERNAME: ${CONFRAGE_TYPEORM_USERNAME}
+            TYPEORM_PASSWORD: ${CONFRAGE_TYPEORM_PASSWORD}
+            TYPEORM_DATABASE: ${CONFRAGE_TYPEORM_DATABASE}
+            TYPEORM_PORT: ${CONFRAGE_TYPEORM_PORT}
+            TYPEORM_ENTITIES: ${CONFRAGE_TYPEORM_ENTITIES}
+            TYPEORM_MIGRATIONS_DIR: ${CONFRAGE_TYPEORM_MIGRATIONS_DIR}
+            TYPEORM_MIGRATIONS: ${CONFRAGE_TYPEORM_MIGRATIONS}
+            STORAGE_DIRECTORY: ${CONFRAGE_STORAGE_DIRECTORY}
+        ports:
+            - ${CONFRAGE_OUT_PORT}:${CONFRAGE_PORT}
+        volumes:
+            - ./confrage:/usr/src/app
+        command: >
+            sh -c "
+                dockerize -wait tcp://mysql:3306 -timeout 60s
+                npm run start:dev
+            "
+        depends_on: 
+            - mysql

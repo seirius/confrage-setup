@@ -1,0 +1,3 @@
+[submodule "confrage"]
+	path = confrage
+	url = git@github.com:seirius/confrage.git
