@@ -38,6 +38,7 @@ services:
         command: >
             sh -c "
                 dockerize -wait tcp://mysql:3306 -timeout 60s
+                npm run mig:run
                 npm run start:prod
             "
         depends_on: 
