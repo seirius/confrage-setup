@@ -21,7 +21,7 @@ services:
         environment: 
             LOGGER_LEVEL: ${CONFRAGE_LOGGER_LEVEL}
             CONFRAGE_PORT: ${CONFRAGE_PORT}
-            TYPEORM_CONNECTION: ${CONFRAGE_TYPEORM_CONNECTIOn}
+            TYPEORM_CONNECTION: ${CONFRAGE_TYPEORM_CONNECTION}
             TYPEORM_HOST: ${CONFRAGE_TYPEORM_HOST}
             TYPEORM_USERNAME: ${CONFRAGE_TYPEORM_USERNAME}
             TYPEORM_PASSWORD: ${CONFRAGE_TYPEORM_PASSWORD}
@@ -33,8 +33,6 @@ services:
             STORAGE_DIRECTORY: ${CONFRAGE_STORAGE_DIRECTORY}
         ports:
             - ${CONFRAGE_OUT_PORT}:${CONFRAGE_PORT}
-        volumes:
-            - ./confrage:/usr/src/app
         command: >
             sh -c "
                 dockerize -wait tcp://mysql:3306 -timeout 60s
